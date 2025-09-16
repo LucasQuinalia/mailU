@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+pdfplumber
+python-dotenv
+nltk
+requests
+openai>=1.0.0
