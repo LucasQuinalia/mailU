@@ -4,9 +4,9 @@ Classifique rapidamente e-mails, gere respostas automáticas e poupe seu precios
 
 ## Funcionalidades
 
-- Classificação de e-mails usando OpenAI API
-- Geração de respostas automáticas com IA
-- Processamento NLP básico (stemming, lemmatization, remoção de stop words)
+- Classificação de e-mails usando `OpenAI API`
+- Geração de respostas automáticas com `IA`
+- Processamento `NLP` básico (stemming, lemmatization, remoção de stop words)
 - Interface web intuitiva
 - Suporte a upload de arquivos (.txt, .pdf) ou texto direto
 
@@ -58,9 +58,9 @@ npm run dev
 
 ## Tecnologias
 
-- Backend: FastAPI, OpenAI API, NLTK
-- Frontend: React, Vite
-- NLP: Stemming, Lemmatization, Remoção de stop words
+- `Backend`: FastAPI, OpenAI API, NLTK
+- `Frontend`: React, Vite
+- `NLP: Stemming`, Lemmatization, Remoção de stop words
 
 ## Estrutura do Projeto
 
