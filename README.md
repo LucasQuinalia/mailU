@@ -22,13 +22,14 @@ pip install -r requirements.txt
 
 2. Configure a variável de ambiente:
 
-- Crie um arquivo .env
 ```console
 touch .env
 ```
 
-- Edite o arquivo .env e adicione sua chave da OpenAI
+```console
+Dentro do arquivo .env:
 OPENAI_API_KEY=sua_chave_aqui
+```
 
 3. Execute o servidor:
 ```console
