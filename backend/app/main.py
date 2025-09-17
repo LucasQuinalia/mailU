@@ -1,3 +1,4 @@
+from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -8,14 +9,14 @@ from app.routes import email_routes
 
 FRONTEND_ORIGINS = os.getenv(
     "FRONTEND_ORIGINS",
-    "https://mailu-frontend.vercel.app,http://localhost:3000,http://localhost:5173"
+    "https://mailu-frontend.vercel.app"
 ).split(",")
 
 app = FastAPI(title="Email Classifier API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=FRONTEND_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
