@@ -42,7 +42,8 @@ export default function UploadForm({ setResult }) {
     if (text.trim()) formData.append("text", text.trim())
 
     try {
-      const res = await fetch("http://localhost:8000/email/classify", {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${apiUrl}/classify`, {
         method: "POST",
         body: formData
       })
