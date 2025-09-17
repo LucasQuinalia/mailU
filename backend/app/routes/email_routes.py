@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, Form, HTTPException
-from ..services.openai_service import openai_service
-from ..utils.file_reader import read_file_content
+from app.services.openai_service import openai_service
+from app.utils.file_reader import read_file_content
 import asyncio
 import logging
 from typing import Dict

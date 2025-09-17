@@ -1,13 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 import os
 from typing import Dict
 from mangum import Mangum
 
 FRONTEND_ORIGINS = os.getenv("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
 
-from .routes import email_routes
+from app.routes import email_routes
 
 app = FastAPI(title="Email Classifier API")
 
