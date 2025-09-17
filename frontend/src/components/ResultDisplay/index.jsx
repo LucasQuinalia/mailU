@@ -69,7 +69,7 @@ export default function ResultDisplay({ result, onNewAnalysis }) {
 
       <div className='response-container'>
         <div className='copy'>
-          <img src="./public/copy.png" alt="ícone" className='copy-icon'/>
+          <img src="/copy.png" alt="ícone" className='copy-icon'/>
           <button
             onClick={handleCopy}
             className='button-copy'
