@@ -3,9 +3,9 @@ import re
 import logging
 from typing import Dict, List
 from openai import OpenAI
-import nltk
-from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import nltk
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
