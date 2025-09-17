@@ -3,24 +3,11 @@ import re
 import logging
 from typing import Dict, List
 import openai
-import nltk
-from nltk.corpus import wordnet
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
-try:
-    nltk.data.find("corpora/wordnet")
-except LookupError:
-    nltk.download("wordnet")
-try:
-    nltk.data.find("tokenizers/punkt")
-except LookupError:
-    nltk.download("punkt")
 
 STOP_WORDS = set([
     'a', 'o', 'e', 'de', 'do', 'da', 'em', 'um', 'uma', 'para',
@@ -50,7 +37,6 @@ class OpenAIService:
         self.stop_words = STOP_WORDS
         self.productive_keywords = PRODUCTIVE_KEYWORDS
         self.unproductive_keywords = UNPRODUCTIVE_KEYWORDS
-        self.lemmatizer = WordNetLemmatizer()
 
     def preprocess_text(self, text: str) -> str:
         if not text or not isinstance(text, str):
@@ -63,24 +49,19 @@ class OpenAIService:
         return text.strip()
 
     def tokenize(self, text: str) -> List[str]:
-        return word_tokenize(text)
+        return text.split()
 
     def remove_stop_words(self, words: List[str]) -> List[str]:
         return [w for w in words if w not in self.stop_words]
-
-    def lemmatize_words(self, words: List[str]) -> List[str]:
-        return [self.lemmatizer.lemmatize(w) for w in words]
 
     def process_text_nlp(self, text: str) -> Dict:
         processed = self.preprocess_text(text)
         tokens = self.tokenize(processed)
         tokens_no_stop = self.remove_stop_words(tokens)
-        lemmatized = self.lemmatize_words(tokens_no_stop)
         return {
             'original': text,
             'processed': processed,
             'without_stopwords': ' '.join(tokens_no_stop),
-            'lemmatized': lemmatized,
             'word_count': len(tokens),
             'unique_words': len(set(tokens))
         }
@@ -123,7 +104,10 @@ class OpenAIService:
                 return f"Seu e-mail foi recebido{', ' + name if name else ''}, mas não exige resposta no momento."
 
     def extract_name(self, text: str) -> str:
-        match = re.search(r'(olá|oi|ola|caro|cara)\s+([A-ZÀ-ÿ][a-zà-ÿ]+(?:\s[A-ZÀ-ÿ][a-zà-ÿ]+)*)', text, re.IGNORECASE)
+        match = re.search(
+            r'(olá|oi|ola|caro|cara)\s+([A-ZÀ-ÿ][a-zà-ÿ]+(?:\s[A-ZÀ-ÿ][a-zà-ÿ]+)*)',
+            text, re.IGNORECASE
+        )
         return match.group(2).strip() if match else None
 
 openai_service = OpenAIService()
