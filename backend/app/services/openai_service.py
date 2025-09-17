@@ -3,22 +3,20 @@ import re
 import logging
 from typing import Dict, List
 from openai import OpenAI
-import spacy
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+nltk.download('punkt')
+nltk.download('stopwords')
+
 class OpenAIService:
     def __init__(self):
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        self.nlp = spacy.load("pt_core_news_sm")
-
-        self.stop_words = set([
-            'a', 'o', 'e', 'de', 'do', 'da', 'em', 'um', 'uma', 'para',
-            'com', 'não', 'é', 'ao', 'os', 'as', 'no', 'na', 'por', 'se',
-            'dos', 'das', 'como', 'mais', 'mas', 'nao', 'nos', 'nas',
-            'email', 'e-mail', 'mail', 'mensagem', 'msg', 'texto'
-        ])
+        self.stop_words = set(stopwords.words('portuguese'))
 
         self.productive_keywords = set([
             'reunião', 'projeto', 'trabalho', 'relatório', 'apresentação',
@@ -47,27 +45,21 @@ class OpenAIService:
     def remove_stop_words(self, words: List[str]) -> List[str]:
         return [word for word in words if word not in self.stop_words]
 
-    def apply_lemmatization(self, text: str) -> List[str]:
-        doc = self.nlp(text)
-        return [token.lemma_ for token in doc if token.is_alpha]
-
     def process_text_nlp(self, text: str) -> Dict:
         processed_text = self.preprocess_text(text)
-        words = re.findall(r'\b[a-zA-ZÀ-ÿ]+\b', processed_text.lower())
-        without_stopwords = self.remove_stop_words(words)
-        lemmatized = self.apply_lemmatization(processed_text)
+        tokens = word_tokenize(processed_text, language='portuguese')
+        without_stopwords = self.remove_stop_words(tokens)
 
         return {
             'original': text,
             'processed': processed_text,
             'without_stopwords': ' '.join(without_stopwords),
-            'lemmatized': lemmatized,
-            'word_count': len(words),
-            'unique_words': len(set(words))
+            'word_count': len(tokens),
+            'unique_words': len(set(tokens))
         }
 
     def classify_with_keywords(self, text: str) -> Dict:
-        words_set = set(text.lower().split())
+        words_set = set(word_tokenize(text.lower(), language='portuguese'))
         productive_count = len(words_set & self.productive_keywords)
         unproductive_count = len(words_set & self.unproductive_keywords)
         classification = "produtivo" if productive_count > unproductive_count else "improdutivo"
@@ -90,9 +82,9 @@ class OpenAIService:
         name = self.extract_name(text)
 
         if classification == "produtivo":
-            prompt = "Escreva uma resposta educada e profissional em português para este e-mail produtivo, corretamente identada"
+            prompt = "Escreva uma resposta educada e profissional em português para este e-mail produtivo, corretamente indentada"
         else:
-            prompt = "Escreva uma resposta educada e curta em português para este e-mail que não exige ação, corretamente identada"
+            prompt = "Escreva uma resposta educada e curta em português para este e-mail que não exige ação, corretamente indentada"
 
         if name:
             prompt += f", direcionando ao remetente chamado {name}"
