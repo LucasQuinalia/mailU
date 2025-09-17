@@ -3,7 +3,7 @@ from app.services.openai_service import openai_service
 from app.utils.file_reader import read_file_content
 import asyncio
 import logging
-from typing import Dict
+from typing import Dict, Any
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -12,7 +12,7 @@ router = APIRouter()
 async def classify_email(
     file: UploadFile = None,
     text: str = Form(None)
-) -> Dict:
+) -> Dict[str, Any]:
     
     if file:
         try:
