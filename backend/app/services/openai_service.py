@@ -10,8 +10,8 @@ from nltk.tokenize import word_tokenize
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-nltk.download('punkt')
-nltk.download('stopwords')
+nltk.download('punkt', quiet=True)
+nltk.download('stopwords', quiet=True)
 
 class OpenAIService:
     def __init__(self):
