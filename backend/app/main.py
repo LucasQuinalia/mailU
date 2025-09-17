@@ -5,8 +5,6 @@ import os
 from typing import Dict
 from mangum import Mangum
 
-load_dotenv()
-
 FRONTEND_ORIGINS = os.getenv("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
 
 from .routes import email_routes
