@@ -19,4 +19,5 @@ app.include_router(email_routes.router, prefix="/email")
 def root():
     return {"message": "API funcionando"}
 
+# Handler para Vercel
 handler = Mangum(app)
