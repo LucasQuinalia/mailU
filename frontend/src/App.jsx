@@ -14,6 +14,11 @@ function App() {
     <div className="app">
       <UploadForm setResult={setResult} />
       {result && <ResultDisplay result={result} onNewAnalysis={handleNewAnalysis} />}
+      <div className='page'>
+        <div className='footer'>
+            <p>Made with &lt;3 by <a href="https://linktr.ee/lucasquinalia">Lucas Quinália</a> for <a href="https://www.autou.io/">AutoU</a></p>
+        </div>
+      </div>
     </div>
   )
 }

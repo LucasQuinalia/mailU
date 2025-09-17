@@ -1,83 +1,36 @@
-/* Estilos básicos */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
-  line-height: 1.6;
+  background-color: #191919;
 }
 
-.app {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.footer {
+  margin: 0 auto 1.5rem auto;
+  background-color: #252525;
+  border: 0.125rem solid #333333;
+  border-radius: 15px;
+  padding: 1rem;
+  color: #fff;
+  font-size: 1.25rem;
+  position: relative;
+  z-index: 1;
 }
 
-.upload-container {
-  background: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+a {
+  background: linear-gradient(90deg, rgba(191,254,111,1), rgba(107,251,224,1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: 0.25s;
 }
 
-.upload-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-input[type="file"] {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background: white;
-}
-
-textarea {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: inherit;
-  resize: vertical;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.2s;
-}
-
-button:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Responsividade básica */
-@media (max-width: 600px) {
-  .app {
-    padding: 10px;
-  }
-  
-  .upload-container {
-    padding: 20px;
-  }
+a:hover {
+  opacity: 70%;
 }

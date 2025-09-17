@@ -72,16 +72,15 @@ npm run dev
     │   │   ├── utils/file_reader.py
     │   │   └── main.py
     │   └── requirements.txt
-    ├── frontend/
-    │   ├── src/
-    │   │   ├── components/
-    │   │   └── styles/
-    │   └── package.json
     └── frontend/
         ├── src/
         │   ├── components/
-        │   │   ├── ResultDisplay.jsx
-        │   │   └──UploadForm.jsx
+        │   │   ├── ResultDisplay/
+        │   │   │   ├── index.jsx
+        │   │   │   └── result-display.css
+        │   │   └──UploadForm/
+        │   │   │   ├── index.jsx
+        │   │   │   └── upload-form.css
         │   ├── styles/
         │   │   └── App.css
         │   ├── App.jsx
