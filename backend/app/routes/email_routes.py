@@ -18,7 +18,7 @@ async def classify_email(
         try:
             content = await file.read()
             text = read_file_content(file.filename, content)
-        except Exception as e:
+        except Exception:
             logger.exception("Erro ao ler o arquivo")
             raise HTTPException(status_code=400, detail="Erro ao processar arquivo")
 
@@ -26,7 +26,6 @@ async def classify_email(
         raise HTTPException(status_code=400, detail="Nenhum texto fornecido")
 
     try:
-        
         classification_result, nlp_analysis, auto_response = await asyncio.gather(
             asyncio.to_thread(openai_service.classify_with_keywords, text),
             asyncio.to_thread(openai_service.process_text_nlp, text),
@@ -44,6 +43,6 @@ async def classify_email(
             }
         }
 
-    except Exception as e:
+    except Exception:
         logger.exception("Erro ao classificar e-mail")
         raise HTTPException(status_code=500, detail="Erro interno do servidor")

@@ -4,9 +4,12 @@ import os
 from typing import Dict
 from mangum import Mangum
 
-FRONTEND_ORIGINS = os.getenv("FRONTEND_ORIGINS", "https://mailu-frontend.vercel.app").split(",")
-
 from app.routes import email_routes
+
+FRONTEND_ORIGINS = os.getenv(
+    "FRONTEND_ORIGINS",
+    "https://mailu-frontend.vercel.app"
+).split(",")
 
 app = FastAPI(title="Email Classifier API")
 
