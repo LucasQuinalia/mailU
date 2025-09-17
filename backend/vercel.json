@@ -1,4 +1,8 @@
 {
+  "version": 2,
+  "builds": [
+    { "src": "app/main.py", "use": "@vercel/python" }
+  ],
   "routes": [
     { "src": "/email/(.*)", "dest": "app/main.py" }
   ]
