@@ -1,8 +1,6 @@
-fastapi
-uvicorn
-python-multipart
-pdfplumber
-python-dotenv
-nltk
-requests
-openai>=1.0.0
+fastapi==0.109.1
+mangum==0.16.1
+python-dotenv==1.0.0
+openai==1.29.0
+spacy==3.6.1
+aiofiles==23.1.0
