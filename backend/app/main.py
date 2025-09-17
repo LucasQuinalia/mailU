@@ -4,7 +4,7 @@ import os
 from typing import Dict
 from mangum import Mangum
 
-FRONTEND_ORIGINS = os.getenv("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
+FRONTEND_ORIGINS = os.getenv("FRONTEND_ORIGINS", "https://mailu-frontend.vercel.app").split(",")
 
 from app.routes import email_routes
 
