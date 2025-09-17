@@ -6,9 +6,13 @@ from mangum import Mangum
 
 from app.routes import email_routes
 
+FRONTEND_ORIGINS = os.getenv(
+    "FRONTEND_ORIGINS",
+    "https://mailu-frontend.vercel.app,http://localhost:3000,http://localhost:5173"
+).split(",")
+
 app = FastAPI(title="Email Classifier API")
 
-# Configuração CORS mais simples
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,5 +27,4 @@ app.include_router(email_routes.router, prefix="/email", tags=["Emails"])
 def root() -> Dict:
     return {"message": "API funcionando"}
 
-# Handler simples para Vercel
 handler = Mangum(app)
