@@ -42,7 +42,7 @@ export default function UploadForm({ setResult }) {
     if (text.trim()) formData.append("text", text.trim())
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL;
+      const apiUrl = import.meta.env.VITE_API_URL || "https://mailu-backend.vercel.app/email";
       const res = await fetch(`${apiUrl}/classify`, {
         method: "POST",
         body: formData

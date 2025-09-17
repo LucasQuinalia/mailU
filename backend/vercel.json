@@ -1,9 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "app/main.py", "use": "@vercel/python" }
+    { "src": "api/index.py", "use": "@vercel/python" },
+    { "src": "api/classify.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/email/(.*)", "dest": "app/main.py" }
+    { "src": "/email/classify", "dest": "/api/classify.py" },
+    { "src": "/(.*)", "dest": "/api/index.py" }
   ]
 }

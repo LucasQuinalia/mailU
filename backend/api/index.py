@@ -6,11 +6,6 @@ from mangum import Mangum
 
 from app.routes import email_routes
 
-FRONTEND_ORIGINS = os.getenv(
-    "FRONTEND_ORIGINS",
-    "https://mailu-frontend.vercel.app,http://localhost:3000,http://localhost:5173"
-).split(",")
-
 app = FastAPI(title="Email Classifier API")
 
 app.add_middleware(
@@ -27,4 +22,4 @@ app.include_router(email_routes.router, prefix="/email", tags=["Emails"])
 def root() -> Dict:
     return {"message": "API funcionando"}
 
-handler = Mangum(app, lifespan="off")
+handler = Mangum(app)
