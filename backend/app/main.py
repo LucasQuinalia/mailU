@@ -9,7 +9,7 @@ load_dotenv()
 
 FRONTEND_ORIGINS = os.getenv("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
 
-from app.routes import email_routes
+from .routes import email_routes
 
 app = FastAPI(title="Email Classifier API")
 
