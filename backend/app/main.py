@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
 from typing import Dict
+from mangum import Mangum
 
 load_dotenv()
 
@@ -25,3 +26,5 @@ app.include_router(email_routes.router, prefix="/email", tags=["Emails"])
 @app.get("/", response_model=Dict)
 def root() -> Dict:
     return {"message": "API funcionando"}
+
+handler = Mangum(app)
