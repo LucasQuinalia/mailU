@@ -7,10 +7,8 @@ from typing import Dict, Any
 import cgi
 import io
 
-# Adicionar o diretório app ao path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'app'))
 
-# Importar os serviços
 from app.services.openai_service import openai_service
 from app.utils.file_reader import read_file_content
 
@@ -30,7 +28,6 @@ class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == '/email/classify':
             try:
-                # Parse do form data
                 content_type = self.headers.get('Content-Type', '')
                 if 'multipart/form-data' in content_type:
                     form = cgi.FieldStorage(
@@ -42,7 +39,6 @@ class handler(BaseHTTPRequestHandler):
                     file = form.getfirst('file')
                     text = form.getfirst('text')
                     
-                    # Processar arquivo se fornecido
                     if file and hasattr(file, 'filename') and file.filename:
                         content = file.file.read()
                         text = read_file_content(file.filename, content)
@@ -51,7 +47,6 @@ class handler(BaseHTTPRequestHandler):
                         self.send_error_response(400, "Nenhum texto fornecido")
                         return
                     
-                    # Classificar usando o serviço real
                     classification_result = openai_service.classify_with_keywords(text)
                     nlp_analysis = openai_service.process_text_nlp(text)
                     auto_response = openai_service.generate_response(text, classification_result['classification'])

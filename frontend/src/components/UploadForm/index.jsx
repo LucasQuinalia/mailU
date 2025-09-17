@@ -67,7 +67,7 @@ export default function UploadForm({ setResult }) {
       <div className='color-square square-right'></div>
       <div className="upload-container">
         <div className="logo">
-          <img src="./public/logo.png" alt="mailU logo"/>
+          <img src="/logo.png" alt="mailU logo"/>
         </div>
 
         <h1 className="lema">Classifique rapidamente e-mails, gere respostas automáticas e poupe seu precioso tempo.</h1>
@@ -80,7 +80,7 @@ export default function UploadForm({ setResult }) {
                 accept=".txt,.pdf"
                 onChange={handleFileChange}/>
               <span>
-                <img src="./public/paperclip.png" alt="ícone" />
+                <img src="/paperclip.png" alt="ícone" />
                 Carregar arquivo .pdf ou .txt
               </span>
             </label>
