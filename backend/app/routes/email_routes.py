@@ -1,3 +1,4 @@
+from __future__ import annotations
 from fastapi import APIRouter, UploadFile, Form, HTTPException
 from app.services.openai_service import openai_service
 from app.utils.file_reader import read_file_content

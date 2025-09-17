@@ -1,7 +1,8 @@
+from __future__ import annotations
 import os
 import re
 import logging
-from typing import Dict, List
+from typing import Dict, List, Any
 import openai
 
 logging.basicConfig(level=logging.INFO)
@@ -54,7 +55,7 @@ class OpenAIService:
     def remove_stop_words(self, words: List[str]) -> List[str]:
         return [w for w in words if w not in self.stop_words]
 
-    def process_text_nlp(self, text: str) -> Dict:
+    def process_text_nlp(self, text: str) -> Dict[str, Any]:
         processed = self.preprocess_text(text)
         tokens = self.tokenize(processed)
         tokens_no_stop = self.remove_stop_words(tokens)
@@ -66,7 +67,7 @@ class OpenAIService:
             'unique_words': len(set(tokens))
         }
 
-    def classify_with_keywords(self, text: str) -> Dict:
+    def classify_with_keywords(self, text: str) -> Dict[str, Any]:
         words_set = set(self.tokenize(text.lower()))
         productive_count = len(words_set & self.productive_keywords)
         unproductive_count = len(words_set & self.unproductive_keywords)
