@@ -45,8 +45,19 @@ export default function UploadForm({ setResult }) {
     setError(null)
 
     const formData = new FormData()
-    if (file) formData.append("file", file)
-    if (text.trim()) formData.append("text", text.trim())
+    if (file) {
+      formData.append("file", file)
+      console.log("Arquivo enviado:", file.name, file.size)
+    }
+    if (text.trim()) {
+      formData.append("text", text.trim())
+      console.log("Texto enviado:", text.trim().substring(0, 50) + "...")
+    }
+
+    console.log("FormData entries:")
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value)
+    }
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL;
@@ -89,23 +100,26 @@ export default function UploadForm({ setResult }) {
                 id="file-input"/>
               <span>
                 <img src="/paperclip.png" alt="ícone" />
-                {file ? file.name : "Carregar arquivo .pdf ou .txt"}
+                {file ? (
+                  <>
+                    📄 {file.name}
+                    <button 
+                      type="button" 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        removeFile()
+                      }}
+                      className="file-remove-inline"
+                    >
+                      ✕
+                    </button>
+                  </>
+                ) : (
+                  "Carregar arquivo .pdf ou .txt"
+                )}
               </span>
             </label>
-            {file && (
-              <div className="file-selected">
-                <span className="file-selected-name">
-                  📄 {file.name}
-                </span>
-                <button 
-                  type="button" 
-                  onClick={removeFile}
-                  className="file-remove-btn"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
           </div>
           
           <div>

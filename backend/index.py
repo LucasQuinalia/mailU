@@ -40,13 +40,19 @@ class handler(BaseHTTPRequestHandler):
                     text = form.getfirst('text')
                     
                     if file and hasattr(file, 'filename') and file.filename:
-                        content = file.file.read()
-                        text = read_file_content(file.filename, content)
-                        if not text or not text.strip():
-                            self.send_error_response(400, "Arquivo vazio ou não contém texto válido.")
+                        try:
+                            content = file.file.read()
+                            text = read_file_content(file.filename, content)
+                            print(f"DEBUG: Arquivo {file.filename}, tamanho: {len(content)} bytes")
+                            print(f"DEBUG: Texto extraído: {text[:100] if text else 'VAZIO'}...")
+                            if not text or not text.strip():
+                                self.send_error_response(400, "Arquivo vazio ou não contém texto válido.")
+                                return
+                        except Exception as e:
+                            print(f"DEBUG: Erro ao processar arquivo: {str(e)}")
+                            self.send_error_response(400, f"Erro ao processar arquivo: {str(e)}")
                             return
-                    
-                    if not text or not text.strip():
+                    elif not text or not text.strip():
                         self.send_error_response(400, "Nenhum texto fornecido.")
                         return
                     
