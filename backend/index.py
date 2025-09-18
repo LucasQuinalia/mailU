@@ -42,14 +42,24 @@ class handler(BaseHTTPRequestHandler):
                     if file and hasattr(file, 'filename') and file.filename:
                         try:
                             content = file.file.read()
-                            text = read_file_content(file.filename, content)
                             print(f"DEBUG: Arquivo {file.filename}, tamanho: {len(content)} bytes")
-                            print(f"DEBUG: Texto extraído: {text[:100] if text else 'VAZIO'}...")
+                            
+                            # Verificar se o arquivo não está vazio
+                            if len(content) == 0:
+                                self.send_error_response(400, "Arquivo vazio.")
+                                return
+                            
+                            text = read_file_content(file.filename, content)
+                            print(f"DEBUG: Texto extraído: '{text[:100] if text else 'VAZIO'}'...")
+                            print(f"DEBUG: Tamanho do texto: {len(text) if text else 0}")
+                            
                             if not text or not text.strip():
-                                self.send_error_response(400, "Arquivo vazio ou não contém texto válido.")
+                                self.send_error_response(400, "Arquivo não contém texto extraível. Verifique se é um PDF com texto ou um arquivo TXT válido.")
                                 return
                         except Exception as e:
                             print(f"DEBUG: Erro ao processar arquivo: {str(e)}")
+                            import traceback
+                            traceback.print_exc()
                             self.send_error_response(400, f"Erro ao processar arquivo: {str(e)}")
                             return
                     elif not text or not text.strip():

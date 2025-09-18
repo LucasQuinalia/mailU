@@ -47,16 +47,9 @@ export default function UploadForm({ setResult }) {
     const formData = new FormData()
     if (file) {
       formData.append("file", file)
-      console.log("Arquivo enviado:", file.name, file.size)
     }
     if (text.trim()) {
       formData.append("text", text.trim())
-      console.log("Texto enviado:", text.trim().substring(0, 50) + "...")
-    }
-
-    console.log("FormData entries:")
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value)
     }
 
     try {
