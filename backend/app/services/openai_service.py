@@ -3,12 +3,12 @@ import os
 import re
 import logging
 from typing import Dict, List, Any
-import openai
+from openai import OpenAI
+from dotenv import load_dotenv
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+load_dotenv()
 
 STOP_WORDS = set([
     'a', 'o', 'e', 'de', 'do', 'da', 'em', 'um', 'uma', 'para',
@@ -34,7 +34,11 @@ UNPRODUCTIVE_KEYWORDS = set([
 
 class OpenAIService:
     def __init__(self):
-        self.client = openai
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            self.client = None
+        else:
+            self.client = OpenAI(api_key=api_key)
         self.stop_words = STOP_WORDS
         self.productive_keywords = PRODUCTIVE_KEYWORDS
         self.unproductive_keywords = UNPRODUCTIVE_KEYWORDS
@@ -81,6 +85,13 @@ class OpenAIService:
 
     def generate_response(self, text: str, classification: str) -> str:
         name = self.extract_name(text)
+        
+        if not self.client:
+            if classification == "produtivo":
+                return f"Obrigado pelo seu e-mail{', ' + name if name else ''}. Entraremos em contato em breve!"
+            else:
+                return f"Seu e-mail foi recebido{', ' + name if name else ''}, mas não exige resposta no momento."
+        
         if classification == "produtivo":
             prompt = f"Escreva uma resposta educada e profissional em português para este e-mail produtivo"
         else:
@@ -90,13 +101,13 @@ class OpenAIService:
         prompt += f":\n\"{text}\""
 
         try:
-            response = self.client.ChatCompletion.create(
+            response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
                 max_tokens=300
             )
-            return response.choices[0].message['content'].strip()
+            return response.choices[0].message.content.strip()
         except Exception as e:
             logger.error(f"Erro ao gerar resposta com IA: {str(e)}", exc_info=True)
             if classification == "produtivo":

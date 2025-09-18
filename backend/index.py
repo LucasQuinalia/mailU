@@ -4,7 +4,7 @@ import json
 import sys
 from http.server import BaseHTTPRequestHandler
 from typing import Dict, Any
-import cgi
+import urllib.parse
 import io
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'app'))
@@ -21,6 +21,13 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             response = {"message": "API funcionando"}
             self.wfile.write(json.dumps(response).encode())
+        elif self.path == '/test':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            response = {"message": "Teste funcionando", "path": self.path}
+            self.wfile.write(json.dumps(response).encode())
         else:
             self.send_response(404)
             self.end_headers()
@@ -30,18 +37,53 @@ class handler(BaseHTTPRequestHandler):
             try:
                 content_type = self.headers.get('Content-Type', '')
                 if 'multipart/form-data' in content_type:
-                    form = cgi.FieldStorage(
-                        fp=self.rfile,
-                        headers=self.headers,
-                        environ={'REQUEST_METHOD': 'POST'}
-                    )
+                    content_length = int(self.headers.get('Content-Length', 0))
+                    post_data = self.rfile.read(content_length)
                     
-                    file = form.getfirst('file')
-                    text = form.getfirst('text')
+                    file = None
+                    text = None
+                    
+                    if b'name="file"' in post_data:
+                        start = post_data.find(b'name="file"')
+                        if start != -1:
+                            file_start = post_data.find(b'\r\n\r\n', start) + 4
+                            file_end = post_data.find(b'\r\n--', file_start)
+                            if file_end == -1:
+                                file_end = len(post_data)
+                            file_content = post_data[file_start:file_end]
+                            
+                            class MockFile:
+                                def __init__(self, content, filename):
+                                    self.content = content
+                                    self.filename = filename
+                                    self.file = io.BytesIO(content)
+                                
+                                def read(self):
+                                    return self.content
+                            
+                            filename = "uploaded_file.pdf"
+                            if b'filename=' in post_data[start:file_start]:
+                                filename_start = post_data.find(b'filename="', start) + 11
+                                filename_end = post_data.find(b'"', filename_start)
+                                if filename_start != 10 and filename_end != -1:
+                                    filename = post_data[filename_start:filename_end].decode('utf-8')
+                            
+                            file = MockFile(file_content, filename)
+                    
+                    if b'name="text"' in post_data:
+                        start = post_data.find(b'name="text"')
+                        if start != -1:
+                            text_start = post_data.find(b'\r\n\r\n', start) + 4
+                            text_end = post_data.find(b'\r\n--', text_start)
+                            if text_end == -1:
+                                text_end = len(post_data)
+                            text = post_data[text_start:text_end].decode('utf-8')
+                    
                     
                     if file and hasattr(file, 'filename') and file.filename:
                         try:
-                            content = file.file.read()
+                            content = file.content
+                            
                             text = read_file_content(file.filename, content)
                             
                             if not text or not text.strip():

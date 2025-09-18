@@ -120,6 +120,9 @@
     outline: none;
     white-space: pre-wrap;
     word-break: break-word;
+    min-height: 12rem;
+    max-height: 30rem;
+    height: auto;
 }
 
 .input-text:focus {
@@ -182,4 +185,12 @@
 .file-remove-inline:hover {
     background: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
+}
+
+.error-message {
+    color: #ff6b6b;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
 }

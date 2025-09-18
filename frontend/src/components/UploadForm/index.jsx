@@ -26,12 +26,6 @@ export default function UploadForm({ setResult }) {
 
   const handleTextChange = (e) => {
     setText(e.target.value)
-
-    const textarea = textareaRef.current
-    if (textarea) {
-      textarea.style.height = "auto"
-      textarea.style.height = textarea.scrollHeight + "px"
-    }
   }
 
   const handleSubmit = async (e) => {
@@ -53,8 +47,13 @@ export default function UploadForm({ setResult }) {
     }
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL;
-      const res = await fetch(`${apiUrl}/classify`, {
+      const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const apiUrl = isDev ? "http://localhost:8000" : (import.meta.env.VITE_API_URL || "http://localhost:8000");
+      
+      
+      const endpoint = apiUrl.endsWith('/email') ? `${apiUrl}/classify` : `${apiUrl}/email/classify`;
+      
+      const res = await fetch(endpoint, {
         method: "POST",
         body: formData
       })
@@ -127,7 +126,7 @@ export default function UploadForm({ setResult }) {
           </div>
 
           {error && (
-            <div style={{ color: 'red', margin: '10px 0' }}>
+            <div className="error-message">
               {error}
             </div>
           )}

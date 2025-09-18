@@ -19,32 +19,37 @@ export default function ResultDisplay({ result, onNewAnalysis }) {
     })
   }, [result])
 
-  const handleCopy = async () => {
+  const handleCopy = async (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
     if (!auto_response) return
 
-    if (!navigator.clipboard) {
-      const el = document.createElement('textarea')
-      el.value = auto_response
-      document.body.appendChild(el)
-      el.select()
-      try {
-        document.execCommand('copy')
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(auto_response)
         setCopied(true)
         timeoutRef.current = setTimeout(() => setCopied(false), 2000)
-      } catch (err) {
-        console.error('Fallback copy failed', err)
-      } finally {
-        document.body.removeChild(el)
+      } else {
+        const textArea = document.createElement('textarea')
+        textArea.value = auto_response
+        textArea.className = 'temp-copy-textarea'
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+        
+        try {
+          document.execCommand('copy')
+          setCopied(true)
+          timeoutRef.current = setTimeout(() => setCopied(false), 2000)
+        } catch (err) {
+          console.error('Failed to copy text: ', err)
+        } finally {
+          document.body.removeChild(textArea)
+        }
       }
-      return
-    }
-
-    try {
-      await navigator.clipboard.writeText(auto_response)
-      setCopied(true)
-      timeoutRef.current = setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      console.error('Erro ao copiar:', err)
+      console.error('Failed to copy text: ', err)
     }
   }
 
@@ -69,12 +74,14 @@ export default function ResultDisplay({ result, onNewAnalysis }) {
 
       <div className='response-container'>
         <div className='copy'>
-          <img src="/copy.png" alt="ícone" className='copy-icon'/>
           <button
+            type="button"
             onClick={handleCopy}
             className='button-copy'
             disabled={copied}
+            title={copied ? 'Resposta copiada!' : 'Clique para copiar a resposta'}
           >
+            <img src="/copy.png" alt="ícone" className='copy-icon'/>
             {copied ? 'Resposta copiada!' : 'Copiar resposta'}
           </button>
         </div>
