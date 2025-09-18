@@ -95,7 +95,7 @@ export default function UploadForm({ setResult }) {
                 <img src="/paperclip.png" alt="ícone" />
                 {file ? (
                   <>
-                    📄 {file.name}
+                    {file.name}
                     <button 
                       type="button" 
                       onClick={(e) => {
