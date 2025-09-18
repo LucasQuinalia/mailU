@@ -16,9 +16,16 @@ export default function UploadForm({ setResult }) {
     }
   }
 
+  const removeFile = () => {
+    setFile(null)
+    const fileInput = document.querySelector('input[type="file"]')
+    if (fileInput) {
+      fileInput.value = ""
+    }
+  }
+
   const handleTextChange = (e) => {
     setText(e.target.value)
-    if (e.target.value) setFile(null)
 
     const textarea = textareaRef.current
     if (textarea) {
@@ -78,17 +85,49 @@ export default function UploadForm({ setResult }) {
               <input 
                 type="file"
                 accept=".txt,.pdf"
-                onChange={handleFileChange}/>
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                id="file-input"/>
               <span>
                 <img src="/paperclip.png" alt="ícone" />
-                Carregar arquivo .pdf ou .txt
+                {file ? file.name : "Carregar arquivo .pdf ou .txt"}
               </span>
             </label>
+            {file && (
+              <div style={{ 
+                marginTop: '10px', 
+                padding: '8px', 
+                background: '#f0f0f0', 
+                borderRadius: '4px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <span style={{ fontSize: '14px', color: '#666' }}>
+                  📄 {file.name} ({(file.size / 1024).toFixed(1)} KB)
+                </span>
+                <button 
+                  type="button" 
+                  onClick={removeFile}
+                  style={{ 
+                    background: '#ff4444', 
+                    color: 'white', 
+                    border: 'none', 
+                    borderRadius: '3px', 
+                    padding: '4px 8px',
+                    cursor: 'pointer',
+                    fontSize: '12px'
+                  }}
+                >
+                  ✕ Remover
+                </button>
+              </div>
+            )}
           </div>
           
           <div>
             <textarea
-              placeholder="Ou cole o texto do e-mail aqui..."
+              placeholder={file ? "Arquivo selecionado! Você pode adicionar texto adicional aqui se quiser..." : "Ou cole o texto do e-mail aqui..."}
               value={text}
               onChange={handleTextChange}
               className='input-text'
