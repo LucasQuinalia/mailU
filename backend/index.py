@@ -42,9 +42,12 @@ class handler(BaseHTTPRequestHandler):
                     if file and hasattr(file, 'filename') and file.filename:
                         content = file.file.read()
                         text = read_file_content(file.filename, content)
+                        if not text or not text.strip():
+                            self.send_error_response(400, "Arquivo vazio ou não contém texto válido.")
+                            return
                     
-                    if not text:
-                        self.send_error_response(400, "Nenhum texto fornecido")
+                    if not text or not text.strip():
+                        self.send_error_response(400, "Nenhum texto fornecido.")
                         return
                     
                     classification_result = openai_service.classify_with_keywords(text)

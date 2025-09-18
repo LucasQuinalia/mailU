@@ -80,13 +80,12 @@ export default function UploadForm({ setResult }) {
         <h1 className="lema">Classifique rapidamente e-mails, gere respostas automáticas e poupe seu precioso tempo.</h1>
         
         <form onSubmit={handleSubmit} className='form'>
-          <div>
+          <div className="file-upload-container">
             <label className="file-upload">
               <input 
                 type="file"
                 accept=".txt,.pdf"
                 onChange={handleFileChange}
-                style={{ display: 'none' }}
                 id="file-input"/>
               <span>
                 <img src="/paperclip.png" alt="ícone" />
@@ -94,32 +93,16 @@ export default function UploadForm({ setResult }) {
               </span>
             </label>
             {file && (
-              <div style={{ 
-                marginTop: '10px', 
-                padding: '8px', 
-                background: '#f0f0f0', 
-                borderRadius: '4px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <span style={{ fontSize: '14px', color: '#666' }}>
-                  📄 {file.name} ({(file.size / 1024).toFixed(1)} KB)
+              <div className="file-selected">
+                <span className="file-selected-name">
+                  📄 {file.name}
                 </span>
                 <button 
                   type="button" 
                   onClick={removeFile}
-                  style={{ 
-                    background: '#ff4444', 
-                    color: 'white', 
-                    border: 'none', 
-                    borderRadius: '3px', 
-                    padding: '4px 8px',
-                    cursor: 'pointer',
-                    fontSize: '12px'
-                  }}
+                  className="file-remove-btn"
                 >
-                  ✕ Remover
+                  ✕
                 </button>
               </div>
             )}
