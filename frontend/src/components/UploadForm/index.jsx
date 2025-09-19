@@ -83,6 +83,7 @@ export default function UploadForm({ setResult }) {
         <h1 className="lema">Classifique rapidamente e-mails, gere respostas automáticas e poupe seu precioso tempo.</h1>
         
         <form onSubmit={handleSubmit} className='form'>
+          <span className="fixed-functionality-text">Funcionalidade de upload de arquivos corrigida!</span>
           <div className="file-upload-container">
             <label className="file-upload">
               <input 
